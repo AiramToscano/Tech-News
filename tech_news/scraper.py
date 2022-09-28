@@ -1,3 +1,4 @@
+from parsel import Selector
 import time
 import requests
 
@@ -10,7 +11,7 @@ def fetch(url):
             url, timeout=3, headers={"user-agent": "Fake user-agent"}
         )
         time.sleep(1)
-        if(response.status_code == 200):
+        if response.status_code == 200:
             return response.text
     except requests.ReadTimeout:
         return None
@@ -23,10 +24,16 @@ def fetch(url):
 
 
 def scrape_novidades(html_content):
+    selector = Selector(text=html_content)
+    urlNotices = selector.css(".cs-overlay-link::attr(href)").getall()
+    return urlNotices
     """Seu código deve vir aqui"""
 
 
+# scrape_novidades(fetch("https://blog.betrybe.com"))
 # Requisito 3
+
+
 def scrape_next_page_link(html_content):
     """Seu código deve vir aqui"""
 
