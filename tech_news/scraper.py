@@ -1,9 +1,27 @@
+import time
+import requests
+
 # Requisito 1
+
+
 def fetch(url):
-    """Seu código deve vir aqui"""
+    try:
+        response = requests.get(
+            url, timeout=3, headers={"user-agent": "Fake user-agent"}
+        )
+        time.sleep(1)
+        if(response.status_code == 200):
+            return response.text
+    except requests.ReadTimeout:
+        return None
+    except requests.HTTPError:
+        return None
 
 
+# print(fetch("https://blog.betrybe.com/"))
 # Requisito 2
+
+
 def scrape_novidades(html_content):
     """Seu código deve vir aqui"""
 
