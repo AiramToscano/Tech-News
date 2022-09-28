@@ -35,10 +35,16 @@ def scrape_novidades(html_content):
 
 
 def scrape_next_page_link(html_content):
+    selector = Selector(text=html_content)
+    nextpage = selector.css(".next.page-numbers::attr(href)").get()
+    return nextpage
     """Seu código deve vir aqui"""
 
 
+# scrape_next_page_link(fetch("https://blog.betrybe.com"))
 # Requisito 4
+
+
 def scrape_noticia(html_content):
     """Seu código deve vir aqui"""
 
