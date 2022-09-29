@@ -46,9 +46,61 @@ def scrape_next_page_link(html_content):
 
 
 def scrape_noticia(html_content):
-    """Seu código deve vir aqui"""
+    try:
+        selector = Selector(text=html_content)
+        url = selector.css("[rel=canonical]::attr(href)").get()
+        title = selector.css(".entry-title::text").get()
+        data = selector.css(".meta-date::text").get()
+        # dataFormat = data.split()
+        writer = selector.css(".url.fn.n::text").get()
+        comments = selector.css(
+            ".post-comments.post-comments-simple h5::text"
+        ).get()
+        commentsFormat = comments.split()
+        summary = selector.xpath("string(//p)").get().strip()
+        tags = selector.css(".post-tags a::text").getall()
+        label = selector.css(".label::text").get()
+        obj = {
+            "url": url,
+            "title": title,
+            "writer": writer,
+            "summary": summary,
+            "comments_count": int(commentsFormat[0]),
+            "timestamp": data,
+            "tags": tags,
+            "category": label,
+        }
+        return obj
+    except AttributeError:
+        selector = Selector(text=html_content)
+        url = selector.css("[rel=canonical]::attr(href)").get()
+        title = selector.css(".entry-title::text").get().strip()
+        data = selector.css(".meta-date::text").get()
+        # dataFormat = data.split()
+        writer = selector.css(".url.fn.n::text").get()
+        summary = selector.xpath("string(//p)").get().strip()
+        tags = selector.css(".post-tags a::text").getall()
+        label = selector.css(".label::text").get()
+        obj = {
+            "url": url,
+            "title": title,
+            "writer": writer,
+            "summary": summary,
+            "comments_count": 0,
+            "timestamp": data,
+            "tags": tags,
+            "category": label,
+        }
+        return obj
 
 
+# print(scrape_noticia(
+#     fetch(
+#         "https://blog.betrybe.com/carreira/livros-sobre-lideranca/"
+#     )
+# ))
 # Requisito 5
+
+
 def get_tech_news(amount):
     """Seu código deve vir aqui"""
