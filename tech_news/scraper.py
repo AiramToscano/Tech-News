@@ -122,6 +122,3 @@ def get_tech_news(amount):
             noticesArray.append(notices)
     create_news(noticesArray)
     return noticesArray
-
-
-# print(get_tech_news(2))
