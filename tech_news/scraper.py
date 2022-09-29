@@ -1,6 +1,7 @@
 from parsel import Selector
 import time
 import requests
+from .database import create_news
 
 # Requisito 1
 
@@ -103,4 +104,24 @@ def scrape_noticia(html_content):
 
 
 def get_tech_news(amount):
-    """Seu código deve vir aqui"""
+    newamount = amount - 1
+    allnotices = []
+    noticesArray = []
+    URL_BASE = "https://blog.betrybe.com"
+    proxpage = URL_BASE
+    while proxpage and allnotices.__len__() <= newamount:
+        fetchapi = fetch(proxpage)
+        arrayNotices = scrape_novidades(fetchapi)
+        allnotices.extend(arrayNotices)
+        proxpage = scrape_next_page_link(fetchapi)
+
+    for index, link in enumerate(allnotices):
+        if(index <= newamount):
+            api = fetch(link)
+            notices = scrape_noticia(api)
+            noticesArray.append(notices)
+    create_news(noticesArray)
+    return noticesArray
+
+
+# print(get_tech_news(2))
