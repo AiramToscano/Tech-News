@@ -40,7 +40,18 @@ def search_by_date(date):
 
 # Requisito 8
 def search_by_tag(tag):
-    """Seu código deve vir aqui"""
+    listTag = []
+    db = search_news({"tags": {"$elemMatch": {"$regex": tag, "$options": "i"}}})
+    if(db == []):
+        listTag.append([])
+        return []
+    for i in db:
+        tupla = (i["title"], i["url"])
+        listTag.append(tupla)
+    return listTag
+
+
+# print(search_by_tag('tecnologia'))
 
 
 # Requisito 9
