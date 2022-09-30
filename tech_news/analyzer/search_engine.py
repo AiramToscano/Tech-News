@@ -1,4 +1,3 @@
-
 from ..database import search_news
 from datetime import datetime
 
@@ -6,7 +5,7 @@ from datetime import datetime
 def search_by_title(title):
     listTitle = []
     db = search_news({"title": {"$regex": title, "$options": "i"}})
-    if(db == []):
+    if db == []:
         listTitle.append([])
         return []
     for i in db:
@@ -18,21 +17,21 @@ def search_by_title(title):
 # Requisito 7
 def search_by_date(date):
     try:
-        listTitle = []
-        d1 = datetime.strptime(date, '%Y-%m-%d')
+        listDate = []
+        d1 = datetime.strptime(date, "%Y-%m-%d")
         dataFormat = str(d1).split()[0]
-        data = dataFormat.split('-')
+        data = dataFormat.split("-")
         dataformatCorrect = f"{data[2]}/{data[1]}/{data[0]}"
         db = search_news({"timestamp": {"$regex": dataformatCorrect}})
-        if(db == []):
-            listTitle.append([])
+        if db == []:
+            listDate.append([])
             return []
         for i in db:
             tupla = (i["title"], i["url"])
-            listTitle.append(tupla)
-            return listTitle
+            listDate.append(tupla)
+            return listDate
     except ValueError:
-        raise ValueError('Data inválida')
+        raise ValueError("Data inválida")
 
 
 # print(search_by_date('2022-09-28'))
@@ -41,8 +40,10 @@ def search_by_date(date):
 # Requisito 8
 def search_by_tag(tag):
     listTag = []
-    db = search_news({"tags": {"$elemMatch": {"$regex": tag, "$options": "i"}}})
-    if(db == []):
+    db = search_news(
+        {"tags": {"$elemMatch": {"$regex": tag, "$options": "i"}}}
+    )
+    if db == []:
         listTag.append([])
         return []
     for i in db:
@@ -56,4 +57,13 @@ def search_by_tag(tag):
 
 # Requisito 9
 def search_by_category(category):
+    listCategory = []
+    db = search_news({"category": {"$regex": category, "$options": "i"}})
+    if db == []:
+        listCategory.append([])
+        return []
+    for i in db:
+        tupla = (i["title"], i["url"])
+        listCategory.append(tupla)
+    return listCategory
     """Seu código deve vir aqui"""
