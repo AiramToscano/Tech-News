@@ -35,5 +35,9 @@ def search_news(query):
     return list(db.news.find(query))
 
 
+def search_newstop5():
+    return list(db.news.find({}, {"comments_count"}).sort({"comments_count": -1}))
+
+
 def get_collection():
     return db.news
